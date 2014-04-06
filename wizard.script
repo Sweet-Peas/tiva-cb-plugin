@@ -2,8 +2,13 @@
 //
 // Code::Blocks new project wizard script
 //
-// Project: Stellaris Launchpad ARM
+// Project: Tiva Launchpad ARM
 // Author:  Alexander Kaltsas
+// Changes by: Pontus Oldberg
+//
+// Description:
+//          Currently the script has been converted to support building with
+//          a makefile but will eventually support building in the IDE as well.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -19,12 +24,14 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the Stellaris Project Wizard\n\n" +
-                             "This wizard will guide you to create a new Stellaris project.\n\n" +
+        local intro_msg = _T("Welcome to the Tiva Project Wizard\n\n" +
+                             "This wizard will guide you to create a new Tiva project.\n\n" +
                              "When you 're ready to proceed, please click \"Next\"\n\n" +
-                             "This wizard is created by Alexander Kaltsas.\nFor suggestions and bug reports, please send to\n<alexkaltsas@gmail.com>");
+                             "This wizard is created by Alexander Kaltsas.\n" +
+                             "Updated for the Tiva libraries by Pontus Oldberg.\n" +
+                             "For suggestions and bug reports, please send to\n<pontus.oldberg@gmail.com>");
 
-        Wizard.AddInfoPage(_T("StellarisIntro"), intro_msg);
+        Wizard.AddInfoPage(_T("TivaIntro"), intro_msg);
         Wizard.AddProjectPathPage();
         Wizard.AddCompilerPage(_T("GNU ARM GCC Compiler"), _T("arm*"), false, true);
         Wizard.AddPage(_T("processorChoice"));
@@ -65,7 +72,7 @@ function OnLeave_programmerChoice(fwd)
 
 function GetFilesDir()
 {
-    local result = _T("stellaris/files");
+    local result = _T("Tiva/files");
     return result;
 }
 
@@ -73,7 +80,7 @@ function GetFilesDir()
 function SetupProject(project)
 {
 
-    project.SetVar(_T("STELLARIS_DIR"), _T("${HOME}/ti/StellarisWare"), false);
+    project.SetVar(_T("Tiva_DIR"), _T("${HOME}/ti/TivaWare"), false);
 
     // Post Build steps
     local pb_armsize = ::wxString();
@@ -88,24 +95,24 @@ function SetupProject(project)
     pb_armsize = _T("arm-none-eabi-objcopy $(TARGET_OUTPUT_FILE)");
 
     // Project compiler options
-    WarningsOn(project, Wizard.GetCompilerID());
-    project.AddCompilerOption(_T("-DPART_") + Processor);
+    // WarningsOn(project, Wizard.GetCompilerID());
+    // project.AddCompilerOption(_T("-DPART_") + Processor);
 
-    project.AddCompilerOption(_T("-mcpu=cortex-m4"));
-    project.AddCompilerOption(_T("-mfpu=fpv4-sp-d16"));
-    project.AddCompilerOption(_T("-mthumb"));
-    project.AddCompilerOption(_T("-mfloat-abi=softfp -ffunction-sections -fdata-sections -MD -std=c99 -Wall -pedantic -c -DTARGET_IS_BLIZZARD_RA2 -DUART_BUFFERED -Dgcc"));
+    // project.AddCompilerOption(_T("-mcpu=cortex-m4"));
+    // project.AddCompilerOption(_T("-mfpu=fpv4-sp-d16"));
+    // project.AddCompilerOption(_T("-mthumb"));
+    // project.AddCompilerOption(_T("-mfloat-abi=softfp -ffunction-sections -fdata-sections -MD -std=c99 -Wall -pedantic -c -DTARGET_IS_BLIZZARD_RA2 -DUART_BUFFERED -Dgcc"));
 
-    project.AddIncludeDir(_T("$(STELLARIS_DIR)"));
+    // project.AddIncludeDir(_T("$(Tiva_DIR)"));
 
 
 
-    project.AddLinkerOption(_T("-T linker.ld"));
-    project.AddLinkerOption(_T("--entry ResetISR --gc-sections"));
-    project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-libgcc-file-name`"));
-    project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-file-name=libc.a`"));
-    project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-file-name=libm.a`"));
-    project.AddLinkerOption(_T("$(STELLARIS_DIR)/driverlib/gcc-cm4f/libdriver-cm4f.a"));
+    // project.AddLinkerOption(_T("-T linker.ld"));
+    // project.AddLinkerOption(_T("--entry ResetISR --gc-sections"));
+    // project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-libgcc-file-name`"));
+    // project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-file-name=libc.a`"));
+    // project.AddLinkerOption(_T("`arm-none-eabi-gcc -print-file-name=libm.a`"));
+    // project.AddLinkerOption(_T("$(Tiva_DIR)/driverlib/gcc-cm4f/libdriver-cm4f.a"));
 
     project.AddToExtensions(_T("debugger/remote_debugging:target=Debug"));
     project.AddToExtensions(_T("debugger/remote_debugging/options:conn_type=0"));
@@ -114,6 +121,9 @@ function SetupProject(project)
     project.AddToExtensions(_T("debugger/remote_debugging/options:ip_port=3333"));
     project.AddToExtensions(_T("debugger/remote_debugging/options:additional_cmds=monitor reset halt"));
 
+    // We are using a custom makefile
+    project.SetMakefile(_T("Makefile));
+    project.SetMakefileCustom(TRUE);
 
     if (ARMLss)
         project.AddCommandsAfterBuild(pb_lss);

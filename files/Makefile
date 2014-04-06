@@ -1,6 +1,6 @@
 #******************************************************************************
 #
-# Makefile - Rules for building the blinky example.
+# Makefile - Generic makefile for building the template project.
 #
 # Copyright (c) 2012-2014 Texas Instruments Incorporated.  All rights reserved.
 # Software License Agreement
@@ -20,6 +20,9 @@
 #
 # This is part of revision 2.1.0.12573 of the EK-TM4C123GXL Firmware Package.
 #
+# Updated: 2014-04-06 to be used in the CodeBlocks template.
+#                     Still generic as to what compiler it can use
+#
 #******************************************************************************
 
 #
@@ -29,8 +32,14 @@ PART=TM4C123GH6PM
 
 #
 # The base directory for TivaWare.
+# If you have placed the Tiva libraries somewhere else you need to change this
 #
-ROOT=/home/pontus/projects/Launchpad/tools
+ROOT=/opt/tiva
+
+#
+# The project name, you need to change this to your own name
+#
+PROJECT=template
 
 #
 # Include the common make definitions.
@@ -40,19 +49,20 @@ include ${ROOT}/makedefs
 #
 # Where to find files that do not live in the source root directory.
 #
+#
+IPATH=/opt/tiva/tools
 VPATH=src
-IPATH=/home/pontus/projects/Launchpad/tools
 CFLAGS += -g
 
 .PHONY: all
 .DEFAULT: all
 #
-# The default rule, which causes the blinky example to be built.
+# The default rule, which causes the template to be built.
 #
 default: all
 
 all: ${COMPILER}
-all: ${COMPILER}/blinky.axf
+all: ${COMPILER}/${PROJECT}.axf
 
 #
 # The rule to clean out all the build products.
@@ -69,11 +79,11 @@ ${COMPILER}:
 #
 # Rules for building the blinky example.
 #
-${COMPILER}/blinky.axf: ${COMPILER}/blinky.o
-${COMPILER}/blinky.axf: ${COMPILER}/startup_${COMPILER}.o
-${COMPILER}/blinky.axf: ld/blinky.ld
-SCATTERgcc_blinky=ld/blinky.ld
-ENTRY_blinky=ResetISR
+${COMPILER}/${PROJECT}.axf: ${COMPILER}/blinky.o
+${COMPILER}/${PROJECT}.axf: ${COMPILER}/startup_${COMPILER}.o
+${COMPILER}/${PROJECT}.axf: ld/linker.ld
+SCATTERgcc_${PROJECT}=ld/linker.ld
+ENTRY_${PROJECT}=ResetISR
 
 #
 # Include the automatically generated dependency files.
