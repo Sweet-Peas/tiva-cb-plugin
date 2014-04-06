@@ -29,6 +29,7 @@
 # Defines the part type that this project uses.
 #
 PART=TM4C123GH6PM
+TARGET=TARGET_IS_TM4C123_RA1
 
 #
 # The base directory for TivaWare.
@@ -60,7 +61,7 @@ VPATH=src
 #
 # Define any build specific flags here
 #
-#CFLAGS+=
+CFLAGS+=-D${TARGET}
 ifeq (${MAKECMDGOALS},Debug)
   CFLAGS+=-g
 else ifeq (${MAKECMDGOALS},Release)
