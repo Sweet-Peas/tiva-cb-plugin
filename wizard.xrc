@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resource xmlns="http://www.wxwidgets.org/wxxrc">
+	<object class="wxPanel" name="processorChoice">
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="textChoice">
+					<label>Please choose a processor for this project...</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>3</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxComboBox" name="comboboxProc">
+					<value>LM4F120H5QR</value>
+					<content>
+						<item>LM4F120H5QR</item>
+						<item>LM4F120E5QR</item>
+						<item>LM4F120C4QR</item>
+						<item>LM4F120B2QR</item>
+					</content>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>3</border>
+			</object>
+
+
+			<object class="sizeritem">
+				<object class="wxCheckBox" name="checkboxBin">
+					<label>Create Binary files (.bin)</label>
+					<checked>1</checked>
+					<tooltip>Create binary files from the .axf output file</tooltip>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+
+			
+
+			<object class="sizeritem">
+				<object class="wxCheckBox" name="checkboxLss">
+					<label>Create extended listing file (.lss)</label>
+					<tooltip>Create extended listing file.</tooltip>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxCheckBox" name="checkboxARMSize">
+					<label>Run arm-size after build</label>
+					<tooltip>Run arm-size after a build to display how much resource is being used in the microcontroller.</tooltip>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+
+</resource>
