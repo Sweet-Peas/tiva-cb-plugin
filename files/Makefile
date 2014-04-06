@@ -50,8 +50,16 @@ include ${ROOT}/makedefs
 # Where to find files that do not live in the source root directory.
 #
 #
-IPATH=/opt/tiva/tools
+IPATH=${ROOT}
+
+#
+# If you need to specify external build dependencies this should be done here
+#
 VPATH=src
+
+#
+# Define any build specific flags here
+#
 CFLAGS += -g
 
 .PHONY: all
@@ -59,15 +67,19 @@ CFLAGS += -g
 #
 # The default rule, which causes the template to be built.
 #
-default: all
+Debug: all
+Release: all
 
 all: ${COMPILER}
 all: ${COMPILER}/${PROJECT}.axf
 
 #
-# The rule to clean out all the build products.
+# Rules to clean out all the build products.
 #
-cleandefault:
+cleanDebug:
+	@rm -rf ${COMPILER} ${wildcard *~}
+
+cleanRelease:
 	@rm -rf ${COMPILER} ${wildcard *~}
 
 #
@@ -79,10 +91,10 @@ ${COMPILER}:
 #
 # Rules for building the blinky example.
 #
-${COMPILER}/${PROJECT}.axf: ${COMPILER}/blinky.o
+${COMPILER}/${PROJECT}.axf: ${COMPILER}/main.o
 ${COMPILER}/${PROJECT}.axf: ${COMPILER}/startup_${COMPILER}.o
-${COMPILER}/${PROJECT}.axf: ld/linker.ld
-SCATTERgcc_${PROJECT}=ld/linker.ld
+${COMPILER}/${PROJECT}.axf: linker.ld
+SCATTERgcc_${PROJECT}=linker.ld
 ENTRY_${PROJECT}=ResetISR
 
 #

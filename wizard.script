@@ -72,7 +72,7 @@ function OnLeave_programmerChoice(fwd)
 
 function GetFilesDir()
 {
-    local result = _T("Tiva/files");
+    local result = _T("tiva/files");
     return result;
 }
 
@@ -122,8 +122,8 @@ function SetupProject(project)
     project.AddToExtensions(_T("debugger/remote_debugging/options:additional_cmds=monitor reset halt"));
 
     // We are using a custom makefile
-    project.SetMakefile(_T("Makefile));
-    project.SetMakefileCustom(TRUE);
+    project.SetMakefile(_T("Makefile"));
+    project.SetMakefileCustom(true);
 
     if (ARMLss)
         project.AddCommandsAfterBuild(pb_lss);
