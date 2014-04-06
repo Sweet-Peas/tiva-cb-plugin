@@ -60,7 +60,12 @@ VPATH=src
 #
 # Define any build specific flags here
 #
-CFLAGS += -g
+#CFLAGS+=
+ifeq (${MAKECMDGOALS},Debug)
+  CFLAGS+=-g
+else ifeq (${MAKECMDGOALS},Release)
+  CFLAGS+=-O3
+endif
 
 .PHONY: all
 .DEFAULT: all
